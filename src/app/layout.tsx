@@ -15,14 +15,6 @@ const geistMono = Roboto_Mono({
 export const metadata: Metadata = {
   title: "Formwork Estimator",
   description: "Created to help you estimate the cost of formwork for your projects.",
-  icons: {
-    icon: "/formwork_logo.svg",            // default 32×32
-    shortcut: "/formwork_logo.svg",
-    other: [
-      { rel: "apple-touch-icon", url: "/formwork_logo.svg" },
-      { rel: "icon", url: "/formwork_logo.svg", type: "image/svg+xml" },
-    ],
-  },
 };
 
 export default function RootLayout({
