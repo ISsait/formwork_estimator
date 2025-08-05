@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useState } from "react";
-import WallFormwork from "./Formwork/WallFormwork";
+import WallDimensions from "./Formwork/Walls/WallDimensions";
 
 export default function EstimatePage(): React.JSX.Element {
   const [projectName, setProjectName] = useState("");
@@ -47,6 +47,7 @@ export default function EstimatePage(): React.JSX.Element {
           <label className="block text-sm font-medium mb-2">
             Formwork Types
           </label>
+          <span className="text-xs text-red-500 italic"> ## These should be drop downs instead of checkboxes so that inputs are preserved if collapsed ##</span>
           <div className="rounded-xl border border-gray-200 shadow-lg p-4">
             <div className="flex items-center">
               <input
@@ -73,7 +74,7 @@ export default function EstimatePage(): React.JSX.Element {
             {/* Content: Conditionally Rendered Formwork Details */}
             {formworkTypes.wallFormwork && (
               <div>
-                <WallFormwork />
+                <WallDimensions />
               </div>
             )}
           </div>

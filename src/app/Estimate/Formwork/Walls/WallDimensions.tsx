@@ -2,9 +2,10 @@
 
 import React from "react";
 import { useState } from "react";
-import WallConcrete from "../Concrete/WallConcrete";
+import WallConcrete from "../../Concrete/WallConcrete";
+import WallFormwork from "./WallFormwork";
 
-export default function WallFormwork(): React.JSX.Element {
+export default function WallDimensions(): React.JSX.Element {
   const [wallHeight, setWallHeight] = useState("");
   const [wallLength, setWallLength] = useState("");
   const [wallThickness, setWallThickness] = useState("");
@@ -12,10 +13,10 @@ export default function WallFormwork(): React.JSX.Element {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start justify-items-center p-4 sm:p-8 pb-20 text-sm/6 text-center sm:text-left font-[family-name:var(--font-roboto-mono)]">
       <div className="w-full max-w-2xl">
-        <div className="mb-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 mb-4">
           <label
             htmlFor="wallHeight"
-            className="block text-sm font-medium mb-2"
+            className="block text-sm font-medium pt-2"
           >
             Wall Height (m)
           </label>
@@ -24,7 +25,7 @@ export default function WallFormwork(): React.JSX.Element {
             id="wallHeight"
             name="wallHeight"
             className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            placeholder="Enter wall height in meters"
+            placeholder="Enter height"
             value={wallHeight}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               setWallHeight(e.target.value)
@@ -32,10 +33,10 @@ export default function WallFormwork(): React.JSX.Element {
           />
         </div>
 
-        <div className="mb-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 mb-4">
           <label
             htmlFor="wallLength"
-            className="block text-sm font-medium mb-2"
+            className="block text-sm font-medium pt-2"
           >
             Wall Length (m)
           </label>
@@ -44,7 +45,7 @@ export default function WallFormwork(): React.JSX.Element {
             id="wallLength"
             name="wallLength"
             className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            placeholder="Enter wall length in meters"
+            placeholder="Enter length"
             value={wallLength}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               setWallLength(e.target.value)
@@ -52,10 +53,10 @@ export default function WallFormwork(): React.JSX.Element {
           />
         </div>
 
-        <div className="mb-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 mb-4">
           <label
             htmlFor="wallThickness"
-            className="block text-sm font-medium mb-2"
+            className="block text-sm font-medium pt-2"
           >
             Wall Thickness (m)
           </label>
@@ -64,35 +65,34 @@ export default function WallFormwork(): React.JSX.Element {
             id="wallThickness"
             name="wallThickness"
             className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            placeholder="Enter wall thickness in meters"
+            placeholder="Enter thickness"
             value={wallThickness}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               setWallThickness(e.target.value)
             }
           />
         </div>
-      </div>
-
-      {/* Result Section */}
-      <div className="w-full max-w-2xl p-4">
-        {wallHeight && wallLength && wallThickness ? (
-          <div>
-            <p className="mt-4 text-sm">
-              <strong>Ties @ 16&quot; o/c: {Math.ceil((parseFloat(wallHeight) * parseFloat(wallLength)) / 0.16537778 * 1.15)}</strong>
-            </p>
-            <p className="mt-4 text-sm">
-              <strong>2x4x12 Walers @ 16&quot; o/c: {Math.ceil((parseFloat(wallHeight) * parseFloat(wallLength)) * 9.40607364 / 12 * 1.15) * 2 }</strong>
-            </p>
-            <WallConcrete
+        {wallHeight && wallLength && wallThickness && (
+          <WallConcrete
               wallHeight={wallHeight}
               wallLength={wallLength}
               wallThickness={wallThickness}
             />
-          </div>
+          )
+        }
+      </div>
+
+      <div className="w-full max-w-2xl">
+        {wallHeight && wallLength && wallThickness ? (
+          <WallFormwork
+            wallHeight={wallHeight}
+            wallLength={wallLength}
+            wallThickness={wallThickness}
+          />
         ) : (
           <div className="text-sm text-gray-500">
             <p>
-              Please enter the wall dimensions to see the concrete estimation.
+              Please enter the wall dimensions to see the material estimation.
             </p>
           </div>
         )}
