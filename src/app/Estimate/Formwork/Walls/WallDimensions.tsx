@@ -1,15 +1,18 @@
 "use client";
 
 import React from "react";
-import { useState } from "react";
 import WallConcrete from "../../Concrete/WallConcrete";
 import WallFormwork from "./WallFormwork";
 
-export default function WallDimensions(): React.JSX.Element {
-  const [wallHeight, setWallHeight] = useState("");
-  const [wallLength, setWallLength] = useState("");
-  const [wallThickness, setWallThickness] = useState("");
-
+export default function WallDimensions({
+  wallDimensions,
+  setWallDimensions,
+}: {
+  wallDimensions: { height: string; length: string; thickness: string };
+  setWallDimensions: React.Dispatch<
+    React.SetStateAction<{ height: string; length: string; thickness: string }>
+  >;
+}): React.JSX.Element {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start justify-items-center p-4 sm:p-8 pb-20 text-sm/6 text-center sm:text-left font-[family-name:var(--font-roboto-mono)]">
       <div className="w-full max-w-2xl">
@@ -26,9 +29,9 @@ export default function WallDimensions(): React.JSX.Element {
             name="wallHeight"
             className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             placeholder="Enter height"
-            value={wallHeight}
+            value={wallDimensions.height}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setWallHeight(e.target.value)
+              setWallDimensions({ ...wallDimensions, height: e.target.value })
             }
           />
         </div>
@@ -46,9 +49,9 @@ export default function WallDimensions(): React.JSX.Element {
             name="wallLength"
             className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             placeholder="Enter length"
-            value={wallLength}
+            value={wallDimensions.length}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setWallLength(e.target.value)
+              setWallDimensions({ ...wallDimensions, length: e.target.value })
             }
           />
         </div>
@@ -66,28 +69,34 @@ export default function WallDimensions(): React.JSX.Element {
             name="wallThickness"
             className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             placeholder="Enter thickness"
-            value={wallThickness}
+            value={wallDimensions.thickness}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setWallThickness(e.target.value)
+              setWallDimensions({
+                ...wallDimensions,
+                thickness: e.target.value,
+              })
             }
           />
         </div>
-        {wallHeight && wallLength && wallThickness && (
-          <WallConcrete
-              wallHeight={wallHeight}
-              wallLength={wallLength}
-              wallThickness={wallThickness}
+        {wallDimensions.height &&
+          wallDimensions.length &&
+          wallDimensions.thickness && (
+            <WallConcrete
+              wallHeight={wallDimensions.height}
+              wallLength={wallDimensions.length}
+              wallThickness={wallDimensions.thickness}
             />
-          )
-        }
+          )}
       </div>
 
       <div className="w-full max-w-2xl">
-        {wallHeight && wallLength && wallThickness ? (
+        {wallDimensions.height &&
+        wallDimensions.length &&
+        wallDimensions.thickness ? (
           <WallFormwork
-            wallHeight={wallHeight}
-            wallLength={wallLength}
-            wallThickness={wallThickness}
+            wallHeight={wallDimensions.height}
+            wallLength={wallDimensions.length}
+            wallThickness={wallDimensions.thickness}
           />
         ) : (
           <div className="text-sm text-gray-500">

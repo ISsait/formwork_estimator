@@ -12,6 +12,12 @@ export default function EstimatePage(): React.JSX.Element {
     footingFormwork: false,
     wallFormwork: false,
   });
+  const [wallDimensions, setWallDimensions] = useState({
+  height: "",
+  length: "",
+  thickness: ""
+});
+
 
   return (
     <div className="flex flex-col items-center justify-center p-8 pb-20 text-sm/6 text-center sm:text-left font-[family-name:var(--font-roboto-mono)]">
@@ -68,7 +74,7 @@ export default function EstimatePage(): React.JSX.Element {
             {/* Content: Conditionally Rendered Formwork Details */}
             {formworkTypes.wallFormwork && (
               <div>
-                <WallDimensions />
+                <WallDimensions wallDimensions={wallDimensions} setWallDimensions={setWallDimensions} />
               </div>
             )}
           </div>
