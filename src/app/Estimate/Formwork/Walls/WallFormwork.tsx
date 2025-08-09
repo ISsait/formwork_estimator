@@ -26,7 +26,7 @@ export default function WallFormwork(
   return (
     <div className="flex flex-col text-sm/6 sm:text-left font-[family-name:var(--font-roboto-mono)]">
       <div className="grid grid-cols-[4fr_1fr] gap-8 mt-2 text-sm">
-        <strong className="bg-amber-950">&#8226; {parseFloat(wallThickness) * 1000}(mm) Ties ( @ 16&quot; ) o/c:</strong>
+        <strong>&#8226; {parseFloat(wallThickness) * 1000}(mm) Ties ( @ 16&quot; ) o/c:</strong>
         <span className="text-right">{ties}</span>
       </div>
       <div className="grid grid-cols-[4fr_1fr] gap-8 mt-2 text-sm">

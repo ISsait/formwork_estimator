@@ -3,6 +3,7 @@
 import React from "react";
 import { useState } from "react";
 import WallDimensions from "./Formwork/Walls/WallDimensions";
+import ChevronButton from "@/Components/ChevronButton";
 
 export default function EstimatePage(): React.JSX.Element {
   const [projectName, setProjectName] = useState("");
@@ -13,7 +14,7 @@ export default function EstimatePage(): React.JSX.Element {
   });
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-8 pb-20 text-sm/6 text-center sm:text-left font-[family-name:var(--font-roboto-mono)]">
+    <div className="flex flex-col items-center justify-center p-8 pb-20 text-sm/6 text-center sm:text-left font-[family-name:var(--font-roboto-mono)]">
       <ul className="list-inside list-disc">
         <li className="mb-2 tracking-[-.01em]">
           Welcome to the Estimator page!
@@ -44,31 +45,24 @@ export default function EstimatePage(): React.JSX.Element {
           />
         </div>
         <div className="mt-8">
-          <label className="block text-sm font-medium mb-2">
+          <label className="block text-sm font-medium mb-4">
             Formwork Types
           </label>
-          <span className="text-xs text-red-500 italic"> ## These should be drop downs instead of checkboxes so that inputs are preserved if collapsed ##</span>
-          <div className="rounded-xl border border-gray-200 shadow-lg p-4">
-            <div className="flex items-center">
-              <input
-                type="checkbox"
-                id="wallFormwork"
-                name="wallFormwork"
-                className="h-4 w-4 text-blue-600 focus:ring-blue-500"
-                checked={formworkTypes.wallFormwork}
-                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                  setFormworkTypes({
-                    ...formworkTypes,
-                    wallFormwork: event.target.checked,
-                  });
-                }}
-              />
-              <label
-                htmlFor="wallFormwork"
-                className="ml-3 text-base font-semibold text-white dark:text-gray-300"
-              >
+
+          <div className="rounded-xl border border-gray-200 shadow-lg p-4 mb-4">
+            <div
+              className="flex items-center cursor-pointer"
+              onClick={() =>
+                setFormworkTypes({
+                  ...formworkTypes,
+                  wallFormwork: !formworkTypes.wallFormwork,
+                })
+              }
+            >
+              <ChevronButton isOpen={formworkTypes.wallFormwork} />
+              <span className="text-base font-semibold text-white dark:text-gray-300">
                 Wall Formwork
-              </label>
+              </span>
             </div>
 
             {/* Content: Conditionally Rendered Formwork Details */}
@@ -79,41 +73,47 @@ export default function EstimatePage(): React.JSX.Element {
             )}
           </div>
 
-          <div className="flex items-center m-4">
-            <input
-              type="checkbox"
-              id="footingFormwork"
-              name="footingFormwork"
-              className="h-4 w-4"
-              checked={formworkTypes.footingFormwork}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+          <div className="rounded-xl border border-gray-200 shadow-lg p-4 mb-4">
+            <div
+              className="flex items-center cursor-pointer"
+              onClick={() =>
                 setFormworkTypes({
                   ...formworkTypes,
-                  footingFormwork: event.target.checked,
-                });
-              }}
-            />
-            <label htmlFor="footingFormwork" className="ml-2 text-sm">
-              Footing Formwork
-            </label>
+                  footingFormwork: !formworkTypes.footingFormwork,
+                })
+              }
+            >
+              <ChevronButton isOpen={formworkTypes.footingFormwork} />
+              <span className="text-base font-semibold text-white dark:text-gray-300">
+                Footing Formwork
+              </span>
+            </div>
+
+            {/* Content: Conditionally Rendered Formwork Details */}
+            {formworkTypes.footingFormwork && (
+              <div>{/*<FootingDimensions />*/}</div>
+            )}
           </div>
-          <div className="flex items-center m-4">
-            <input
-              type="checkbox"
-              id="slabFormwork"
-              name="slabFormwork"
-              className="h-4 w-4"
-              checked={formworkTypes.slabFormwork}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+          <div className="rounded-xl border border-gray-200 shadow-lg p-4 mb-4">
+            <div
+              className="flex items-center cursor-pointer"
+              onClick={() =>
                 setFormworkTypes({
                   ...formworkTypes,
-                  slabFormwork: event.target.checked,
-                });
-              }}
-            />
-            <label htmlFor="slabFormwork" className="ml-2 text-sm">
-              Slab Formwork
-            </label>
+                  slabFormwork: !formworkTypes.slabFormwork,
+                })
+              }
+            >
+              <ChevronButton isOpen={formworkTypes.slabFormwork} />
+              <span className="text-base font-semibold text-white dark:text-gray-300">
+                Slab Formwork
+              </span>
+            </div>
+
+            {/* Content: Conditionally Rendered Formwork Details */}
+            {formworkTypes.slabFormwork && (
+              <div>{/* <SlabDimensions /> */}</div>
+            )}
           </div>
         </div>
       </div>
