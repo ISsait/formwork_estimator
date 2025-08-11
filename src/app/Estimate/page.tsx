@@ -3,6 +3,7 @@
 import React from "react";
 import { useState } from "react";
 import WallDimensions from "./Formwork/Walls/WallDimensions";
+import FootingDimensions from "./Formwork/Footings/FootingDimensions";
 import ChevronButton from "@/Components/ChevronButton";
 
 export default function EstimatePage(): React.JSX.Element {
@@ -13,11 +14,16 @@ export default function EstimatePage(): React.JSX.Element {
     wallFormwork: false,
   });
   const [wallDimensions, setWallDimensions] = useState({
-  height: "",
-  length: "",
-  thickness: ""
-});
+    height: "",
+    length: "",
+    thickness: "",
+  });
 
+  const [footingDimensions, setFootingDimensions] = useState({
+    width: "",
+    length: "",
+    depth: "",
+  });
 
   return (
     <div className="flex flex-col items-center justify-center p-8 pb-20 text-sm/6 text-center sm:text-left font-[family-name:var(--font-roboto-mono)]">
@@ -74,7 +80,10 @@ export default function EstimatePage(): React.JSX.Element {
             {/* Content: Conditionally Rendered Formwork Details */}
             {formworkTypes.wallFormwork && (
               <div>
-                <WallDimensions wallDimensions={wallDimensions} setWallDimensions={setWallDimensions} />
+                <WallDimensions
+                  wallDimensions={wallDimensions}
+                  setWallDimensions={setWallDimensions}
+                />
               </div>
             )}
           </div>
@@ -97,7 +106,12 @@ export default function EstimatePage(): React.JSX.Element {
 
             {/* Content: Conditionally Rendered Formwork Details */}
             {formworkTypes.footingFormwork && (
-              <div>{/*<FootingDimensions />*/}</div>
+              <div>
+                <FootingDimensions
+                  footingDimensions={footingDimensions}
+                  setFootingDimensions={setFootingDimensions}
+                />
+              </div>
             )}
           </div>
           <div className="rounded-xl border border-gray-200 shadow-lg p-4 mb-4">
