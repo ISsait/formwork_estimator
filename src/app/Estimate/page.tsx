@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import WallDimensions from "./Formwork/Walls/WallDimensions";
 import FootingDimensions from "./Formwork/Footings/FootingDimensions";
@@ -23,7 +23,25 @@ export default function EstimatePage(): React.JSX.Element {
     width: "",
     length: "",
     depth: "",
+    followWallDimensions: false,
   });
+
+  useEffect(() => {
+    if (footingDimensions.followWallDimensions) {
+      setFootingDimensions({
+        ...footingDimensions,
+        width: (parseFloat(wallDimensions.thickness) + 0.4).toPrecision(2),
+        length: wallDimensions.length,
+      });
+    }
+    if (!footingDimensions.followWallDimensions) {
+      setFootingDimensions({
+        ...footingDimensions,
+        width: "",
+        length: "",
+      });
+    }
+  }, [footingDimensions.followWallDimensions, wallDimensions]);
 
   return (
     <div className="flex flex-col items-center justify-center p-8 pb-20 text-sm/6 text-center sm:text-left font-[family-name:var(--font-roboto-mono)]">
@@ -102,17 +120,46 @@ export default function EstimatePage(): React.JSX.Element {
               <span className="text-base font-semibold text-white dark:text-gray-300">
                 Footing Formwork
               </span>
-            </div>
-
-            {/* Content: Conditionally Rendered Formwork Details */}
-            {formworkTypes.footingFormwork && (
-              <div>
-                <FootingDimensions
-                  footingDimensions={footingDimensions}
-                  setFootingDimensions={setFootingDimensions}
+              <div className="ml-4">
+                <input
+                  type="checkbox"
+                  id="followWallDimensions"
+                  name="followWallDimensions"
+                  className="mt-1"
+                  checked={footingDimensions.followWallDimensions}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setFootingDimensions({
+                      ...footingDimensions,
+                      followWallDimensions: e.target.checked,
+                    })
+                  }
                 />
+                <label
+                  htmlFor="followWallDimensions"
+                  className="ml-2 text-base font-semibold text-white dark:text-gray-300"
+                >
+                  Follow Wall Dimensions
+                </label>
               </div>
-            )}
+            </div>
+            {formworkTypes.footingFormwork &&
+              footingDimensions.followWallDimensions && (
+                <div>
+                  <FootingDimensions
+                    footingDimensions={footingDimensions}
+                    setFootingDimensions={setFootingDimensions}
+                  />
+                </div>
+              )}
+            {formworkTypes.footingFormwork &&
+              !footingDimensions.followWallDimensions && (
+                <div>
+                  <FootingDimensions
+                    footingDimensions={footingDimensions}
+                    setFootingDimensions={setFootingDimensions}
+                  />
+                </div>
+              )}
           </div>
           <div className="rounded-xl border border-gray-200 shadow-lg p-4 mb-4">
             <div

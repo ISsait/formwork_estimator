@@ -20,6 +20,8 @@ export default function FootingFormwork(
         return "2x4x6";
       case inches < 8:
         return "2x6x8";
+      case inches < 10:
+        return "2x8x10";
       case inches < 12:
         return "2x8x12";
       default:
@@ -31,7 +33,7 @@ export default function FootingFormwork(
     <div className="flex flex-col text-sm/6 sm:text-left font-[family-name:var(--font-roboto-mono)]">
       <div className="grid grid-cols-[4fr_1fr] gap-8 mt-2 text-sm">
         <strong>&#8226; Dimension lumber required:</strong>
-        <span className="text-right">{dimLumber(footingDepth)}</span>
+        <span className="text-right">{dimLumber(footingDepth)}<p className="text-red-700">improve this: e.g. 250mm should use 2x10 (round down)</p></span>
       </div>
     </div>
   );

@@ -8,9 +8,9 @@ export default function FootingDimensions({
   footingDimensions,
   setFootingDimensions,
 }: {
-  footingDimensions: { width: string; length: string; depth: string };
+  footingDimensions: { width: string; length: string; depth: string; followWallDimensions: boolean };
   setFootingDimensions: React.Dispatch<
-    React.SetStateAction<{ width: string; length: string; depth: string }>
+    React.SetStateAction<{ width: string; length: string; depth: string; followWallDimensions: boolean }>
   >;
 }) {
   return (
