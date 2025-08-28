@@ -20,6 +20,7 @@ export default function EstimatePage(): React.JSX.Element {
   });
 
   const [footingDimensions, setFootingDimensions] = useState({
+    projection: "0",
     width: "",
     length: "",
     depth: "",
@@ -27,21 +28,40 @@ export default function EstimatePage(): React.JSX.Element {
   });
 
   useEffect(() => {
-    if (footingDimensions.followWallDimensions) {
+  if (footingDimensions.followWallDimensions) {
+    const projection = parseFloat(footingDimensions.projection);
+    const thickness = parseFloat(wallDimensions.thickness);
+
+    if (!isNaN(projection) && !isNaN(thickness)) {
+      const widthAndProjection = (projection * 2 + thickness)
+        .toPrecision(3)
+        .toString();
+
       setFootingDimensions({
         ...footingDimensions,
-        width: (parseFloat(wallDimensions.thickness) + 0.4).toPrecision(2),
+        width: widthAndProjection,
         length: wallDimensions.length,
       });
-    }
-    if (!footingDimensions.followWallDimensions) {
+    } else {
+      console.warn("Invalid projection or thickness:", projection, thickness);
       setFootingDimensions({
         ...footingDimensions,
         width: "",
         length: "",
+        projection: "0",
       });
     }
-  }, [footingDimensions.followWallDimensions, wallDimensions]);
+  }
+
+  if (!footingDimensions.followWallDimensions) {
+    setFootingDimensions({
+      ...footingDimensions,
+      width: "",
+      length: "",
+    });
+  }
+}, [wallDimensions, footingDimensions.followWallDimensions, footingDimensions.projection]);
+
 
   return (
     <div className="flex flex-col items-center justify-center p-8 pb-20 text-sm/6 text-center sm:text-left font-[family-name:var(--font-roboto-mono)]">
@@ -107,19 +127,21 @@ export default function EstimatePage(): React.JSX.Element {
           </div>
 
           <div className="rounded-xl border border-gray-200 shadow-lg p-4 mb-4">
-            <div
-              className="flex items-center cursor-pointer"
-              onClick={() =>
-                setFormworkTypes({
-                  ...formworkTypes,
-                  footingFormwork: !formworkTypes.footingFormwork,
-                })
-              }
-            >
-              <ChevronButton isOpen={formworkTypes.footingFormwork} />
-              <span className="text-base font-semibold text-white dark:text-gray-300">
-                Footing Formwork
-              </span>
+            <div className="flex flex-row justify-between">
+              <div
+                className="flex items-center cursor-pointer"
+                onClick={() =>
+                  setFormworkTypes({
+                    ...formworkTypes,
+                    footingFormwork: !formworkTypes.footingFormwork,
+                  })
+                }
+              >
+                <ChevronButton isOpen={formworkTypes.footingFormwork} />
+                <span className="text-base font-semibold text-white dark:text-gray-300">
+                  Footing Formwork
+                </span>
+              </div>
               <div className="ml-4">
                 <input
                   type="checkbox"
@@ -142,24 +164,14 @@ export default function EstimatePage(): React.JSX.Element {
                 </label>
               </div>
             </div>
-            {formworkTypes.footingFormwork &&
-              footingDimensions.followWallDimensions && (
-                <div>
-                  <FootingDimensions
-                    footingDimensions={footingDimensions}
-                    setFootingDimensions={setFootingDimensions}
-                  />
-                </div>
-              )}
-            {formworkTypes.footingFormwork &&
-              !footingDimensions.followWallDimensions && (
-                <div>
-                  <FootingDimensions
-                    footingDimensions={footingDimensions}
-                    setFootingDimensions={setFootingDimensions}
-                  />
-                </div>
-              )}
+            {formworkTypes.footingFormwork && (
+              <div>
+                <FootingDimensions
+                  footingDimensions={footingDimensions}
+                  setFootingDimensions={setFootingDimensions}
+                />
+              </div>
+            )}
           </div>
           <div className="rounded-xl border border-gray-200 shadow-lg p-4 mb-4">
             <div
