@@ -8,12 +8,23 @@ export default function FootingDimensions({
   footingDimensions,
   setFootingDimensions,
 }: {
-  footingDimensions: { projection: string; width: string; length: string; depth: string; followWallDimensions: boolean };
+  footingDimensions: {
+    projection: string;
+    width: string;
+    length: string;
+    depth: string;
+    followWallDimensions: boolean;
+  };
   setFootingDimensions: React.Dispatch<
-    React.SetStateAction<{ projection: string; width: string; length: string; depth: string; followWallDimensions: boolean }>
+    React.SetStateAction<{
+      projection: string;
+      width: string;
+      length: string;
+      depth: string;
+      followWallDimensions: boolean;
+    }>
   >;
 }) {
-
   const [isReadOnly, setIsReadOnly] = React.useState(false);
 
   useEffect(() => {
@@ -27,29 +38,35 @@ export default function FootingDimensions({
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start justify-items-center p-4 sm:p-8 pb-20 text-sm/6 text-center sm:text-left font-[family-name:var(--font-roboto-mono)]">
       <div className="w-full max-w-2xl">
-        {footingDimensions.followWallDimensions && <div className="grid grid-cols-1 md:grid-cols-2 mb-4">
-          <label
-            htmlFor="footingProjection"
-            className="block text-sm font-medium pt-2"
-          >
-            Footing Projection (m)
-          </label>
-          <input
-            type="number"
-            id="footingProjection"
-            name="footingProjection"
-            className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            placeholder="Enter projection"
-            value={footingDimensions.projection === "0" ? "" : footingDimensions.projection}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              const projection = e.target.value;
-              setFootingDimensions({
-                ...footingDimensions,
-                projection: projection,
-              })
-            }}
-          />
-        </div>}
+        {footingDimensions.followWallDimensions && (
+          <div className="grid grid-cols-1 md:grid-cols-2 mb-4">
+            <label
+              htmlFor="footingProjection"
+              className="block text-sm font-medium pt-2"
+            >
+              Footing Projection (m)
+            </label>
+            <input
+              type="number"
+              id="footingProjection"
+              name="footingProjection"
+              className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              placeholder="Enter projection"
+              value={
+                footingDimensions.projection === "0"
+                  ? ""
+                  : footingDimensions.projection
+              }
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                const projection = e.target.value;
+                setFootingDimensions({
+                  ...footingDimensions,
+                  projection: projection,
+                });
+              }}
+            />
+          </div>
+        )}
 
         <div className="grid grid-cols-1 md:grid-cols-2 mb-4">
           <label

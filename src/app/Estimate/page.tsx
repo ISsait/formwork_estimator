@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import WallDimensions from "./Formwork/Walls/WallDimensions";
 import FootingDimensions from "./Formwork/Footings/FootingDimensions";
-import ChevronButton from "@/Components/ChevronButton";
+import ChevronButton from "@/app/Components/ChevronButton";
 
 export default function EstimatePage(): React.JSX.Element {
   const [projectName, setProjectName] = useState("");
@@ -18,7 +18,6 @@ export default function EstimatePage(): React.JSX.Element {
     length: "",
     thickness: "",
   });
-
   const [footingDimensions, setFootingDimensions] = useState({
     projection: "0",
     width: "",
@@ -28,40 +27,43 @@ export default function EstimatePage(): React.JSX.Element {
   });
 
   useEffect(() => {
-  if (footingDimensions.followWallDimensions) {
-    const projection = parseFloat(footingDimensions.projection);
-    const thickness = parseFloat(wallDimensions.thickness);
+    if (footingDimensions.followWallDimensions) {
+      const projection = parseFloat(footingDimensions.projection);
+      const thickness = parseFloat(wallDimensions.thickness);
 
-    if (!isNaN(projection) && !isNaN(thickness)) {
-      const widthAndProjection = (projection * 2 + thickness)
-        .toPrecision(3)
-        .toString();
+      if (!isNaN(projection) && !isNaN(thickness)) {
+        const widthAndProjection = (projection * 2 + thickness)
+          .toPrecision(3)
+          .toString();
 
-      setFootingDimensions({
-        ...footingDimensions,
-        width: widthAndProjection,
-        length: wallDimensions.length,
-      });
-    } else {
-      console.warn("Invalid projection or thickness:", projection, thickness);
+        setFootingDimensions({
+          ...footingDimensions,
+          width: widthAndProjection,
+          length: wallDimensions.length,
+        });
+      } else {
+        console.warn("Invalid projection or thickness:", projection, thickness);
+        setFootingDimensions({
+          ...footingDimensions,
+          width: "",
+          length: "",
+          projection: "0",
+        });
+      }
+    }
+
+    if (!footingDimensions.followWallDimensions) {
       setFootingDimensions({
         ...footingDimensions,
         width: "",
         length: "",
-        projection: "0",
       });
     }
-  }
-
-  if (!footingDimensions.followWallDimensions) {
-    setFootingDimensions({
-      ...footingDimensions,
-      width: "",
-      length: "",
-    });
-  }
-}, [wallDimensions, footingDimensions.followWallDimensions, footingDimensions.projection]);
-
+  }, [
+    wallDimensions,
+    footingDimensions.followWallDimensions,
+    footingDimensions.projection,
+  ]);
 
   return (
     <div className="flex flex-col items-center justify-center p-8 pb-20 text-sm/6 text-center sm:text-left font-[family-name:var(--font-roboto-mono)]">

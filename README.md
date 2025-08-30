@@ -37,6 +37,8 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 
 Todo:
-1. have dimensions persist after drop down is closed and reopened
-2. allow footing dims to populate using checkbox, but without the drop down closing in the process.
-3. add feature that requests user to input footing projection when using wall dims to pre-populate footings
+1. write schema for persistence layer
+2. provide capability to modify estimate excess (qty buffer)
+3. display takeoffs in separate view with different colors for visual differentiation
+4. provide ability to add multiple wall sections ( label each with a letter, and have corresponding letter assigned to linked footings)
+5. provide footing projection inputs for each side for footing (to accommodate L-shaped footings)
