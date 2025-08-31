@@ -6,18 +6,31 @@ import WallDimensions from "./Formwork/Walls/WallDimensions";
 import FootingDimensions from "./Formwork/Footings/FootingDimensions";
 import ChevronButton from "@/app/Components/ChevronButton";
 
+type Wall = {
+  height: number,
+  length: number,
+  thickness: number,
+  id: string
+}
+
 export default function EstimatePage(): React.JSX.Element {
   const [projectName, setProjectName] = useState("");
+
+  // these flags can be removed once class instantiation is implemented
   const [formworkTypes, setFormworkTypes] = useState({
     slabFormwork: false,
     footingFormwork: false,
     wallFormwork: false,
   });
+
+  const [walls, setWalls] = useState<Wall[]>([]);
+
   const [wallDimensions, setWallDimensions] = useState({
     height: "",
     length: "",
     thickness: "",
   });
+
   const [footingDimensions, setFootingDimensions] = useState({
     projection: "0",
     width: "",
