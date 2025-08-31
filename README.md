@@ -43,3 +43,4 @@ Todo:
 4. provide ability to add multiple wall sections ( label each with a letter, and have corresponding letter assigned to linked footings)
 5. provide footing projection inputs for each side for footing (to accommodate L-shaped footings)
 6. set remote repo in S-zoftLabs
+7. GitHub desktop app thinks that this repo is under ZoftLabs (it should be but I haven't figured out how to configure the S-ZoftLabs remote yet)
