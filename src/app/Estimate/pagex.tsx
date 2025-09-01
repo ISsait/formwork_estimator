@@ -1,22 +1,22 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
-import Plus from "../Components/Plus";
+import WallDimensions from "./Formwork/Walls/WallDimensions";
+import FootingDimensions from "./Formwork/Footings/FootingDimensions";
 import ChevronButton from "@/app/Components/ChevronButton";
-import WallDimensions from "@/app/Estimate/Formwork/Walls/WallDimensions";
 
-export type Wall = {
-  height: string,
-  length: string,
-  thickness: string,
+type Wall = {
+  height: number,
+  length: number,
+  thickness: number,
   id: string
 }
 
 type Footing = {
-  width: string,
-  length: string,
-  depth: string,
+  width: number,
+  length: number,
+  depth: number,
   followWallDimensions: string | null,
   id: string
 }
@@ -24,20 +24,20 @@ type Footing = {
 export default function EstimatePage(): React.JSX.Element {
   const [projectName, setProjectName] = useState("");
 
-  const [formworkTypes, setFormworkTypes] = useState({
-    slabFormwork: false,
-    footingFormwork: false,
-    wallFormwork: false,
-  });
+  // these flags can be removed once class instantiation is implemented
+  // const [formworkTypes, setFormworkTypes] = useState({
+  //   slabFormwork: false,
+  //   footingFormwork: false,
+  //   wallFormwork: false,
+  // });
 
-  const [wallDimensions, setWallDimensions] = useState<Wall>({
-    height: "",
-    length: "",
-    thickness: "",
-    id: "",
-  });
+  const [walls, setWalls] = useState<Wall[]>([]);
 
-  const [walls, setWalls] = useState<Wall[]>([wallDimensions]);
+  // const [wallDimensions, setWallDimensions] = useState({
+  //   height: "",
+  //   length: "",
+  //   thickness: "",
+  // });
 
   const [footings, setFootings] = useState<Footing[]>([]);
 
@@ -125,7 +125,6 @@ export default function EstimatePage(): React.JSX.Element {
           </label>
 
           <div className="rounded-xl border border-gray-200 shadow-lg p-4 mb-4">
-            <div className="flex flex-col-2 justify-between">
             <div
               className="flex items-center cursor-pointer"
               onClick={() =>
@@ -139,39 +138,85 @@ export default function EstimatePage(): React.JSX.Element {
               <span className="text-base font-semibold text-white dark:text-gray-300">
                 Wall Formwork
               </span>
-              
             </div>
-            <div className="flex items-center cursor-pointer"
-              onClick={() => {
-                const newWall: Wall = {
-                  height: "",
-                  length: "",
-                  thickness: "",
-                  id: Date.now().toString(),
-                };
-                setWalls((prevWalls) => [...prevWalls, newWall]);
-              }}
-            >
-              <Plus />
-              <span className="ml-2 text-sm text-gray-500">Add Wall Section</span>
-            </div>
-          </div>
 
             {/* Content: Conditionally Rendered Formwork Details */}
             {formworkTypes.wallFormwork && (
               <div>
-                {walls.map((wall) => (
-                  <WallDimensions
-                    key={wall.id}
-                    wallDimensions={wall}
-                    setWallDimensions={(updatedWall: Wall) => {
-                      setWalls((prevWalls) =>
-                        prevWalls.map((w) => (w.id === updatedWall.id ? updatedWall : w))
-                      );
-                    }}
-                  />
-                ))}
+                <WallDimensions
+                  wallDimensions={wallDimensions}
+                  setWallDimensions={setWallDimensions}
+                />
               </div>
+            )}
+          </div>
+
+          <div className="rounded-xl border border-gray-200 shadow-lg p-4 mb-4">
+            <div className="flex flex-row justify-between">
+              <div
+                className="flex items-center cursor-pointer"
+                onClick={() =>
+                  setFormworkTypes({
+                    ...formworkTypes,
+                    footingFormwork: !formworkTypes.footingFormwork,
+                  })
+                }
+              >
+                <ChevronButton isOpen={formworkTypes.footingFormwork} />
+                <span className="text-base font-semibold text-white dark:text-gray-300">
+                  Footing Formwork
+                </span>
+              </div>
+              <div className="ml-4">
+                <input
+                  type="checkbox"
+                  id="followWallDimensions"
+                  name="followWallDimensions"
+                  className="mt-1"
+                  checked={footingDimensions.followWallDimensions}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setFootingDimensions({
+                      ...footingDimensions,
+                      followWallDimensions: e.target.checked,
+                    })
+                  }
+                />
+                <label
+                  htmlFor="followWallDimensions"
+                  className="ml-2 text-base font-semibold text-white dark:text-gray-300"
+                >
+                  Follow Wall Dimensions
+                </label>
+              </div>
+            </div>
+            {formworkTypes.footingFormwork && (
+              <div>
+                <FootingDimensions
+                  footingDimensions={footingDimensions}
+                  setFootingDimensions={setFootingDimensions}
+                />
+              </div>
+            )}
+          </div>
+          <div className="rounded-xl border border-gray-200 shadow-lg p-4 mb-4">
+            <div
+              className="flex items-center cursor-pointer"
+              onClick={() =>
+                setFormworkTypes({
+                  ...formworkTypes,
+                  slabFormwork: !formworkTypes.slabFormwork,
+                })
+              }
+            >
+              <ChevronButton isOpen={formworkTypes.slabFormwork} />
+              <span className="text-base font-semibold text-white dark:text-gray-300">
+                Slab Formwork
+              </span>
+            </div>
+
+            {/* Content: Conditionally Rendered Formwork Details */}
+            {formworkTypes.slabFormwork && (
+              <div>{/* <SlabDimensions /> */}</div>
             )}
           </div>
         </div>

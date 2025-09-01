@@ -3,19 +3,19 @@
 import React from "react";
 import WallConcrete from "../../Concrete/WallConcrete";
 import WallFormwork from "./WallFormwork";
+import type { Wall } from "@/app/Estimate/page";
 
 export default function WallDimensions({
   wallDimensions,
   setWallDimensions,
 }: {
-  wallDimensions: { height: string; length: string; thickness: string };
-  setWallDimensions: React.Dispatch<
-    React.SetStateAction<{ height: string; length: string; thickness: string }>
-  >;
+  wallDimensions: Wall;
+  setWallDimensions: (updatedWall: Wall) => void;
 }): React.JSX.Element {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start justify-items-center p-4 sm:p-8 pb-20 text-sm/6 text-center sm:text-left font-[family-name:var(--font-roboto-mono)]">
       <div className="w-full max-w-2xl">
+        <h2 className="text-lg font-semibold mb-4">Wall ID: {wallDimensions.id}</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 mb-4">
           <label
             htmlFor="wallHeight"
