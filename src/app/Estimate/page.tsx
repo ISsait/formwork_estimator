@@ -13,70 +13,80 @@ type Wall = {
   id: string
 }
 
+type Footing = {
+  width: number,
+  length: number,
+  depth: number,
+  followWallDimensions: string | null,
+  id: string
+}
+
 export default function EstimatePage(): React.JSX.Element {
   const [projectName, setProjectName] = useState("");
 
   // these flags can be removed once class instantiation is implemented
-  const [formworkTypes, setFormworkTypes] = useState({
-    slabFormwork: false,
-    footingFormwork: false,
-    wallFormwork: false,
-  });
+  // const [formworkTypes, setFormworkTypes] = useState({
+  //   slabFormwork: false,
+  //   footingFormwork: false,
+  //   wallFormwork: false,
+  // });
 
   const [walls, setWalls] = useState<Wall[]>([]);
 
-  const [wallDimensions, setWallDimensions] = useState({
-    height: "",
-    length: "",
-    thickness: "",
-  });
+  // const [wallDimensions, setWallDimensions] = useState({
+  //   height: "",
+  //   length: "",
+  //   thickness: "",
+  // });
 
-  const [footingDimensions, setFootingDimensions] = useState({
-    projection: "0",
-    width: "",
-    length: "",
-    depth: "",
-    followWallDimensions: false,
-  });
+  const [footings, setFootings] = useState<Footing[]>([]);
 
-  useEffect(() => {
-    if (footingDimensions.followWallDimensions) {
-      const projection = parseFloat(footingDimensions.projection);
-      const thickness = parseFloat(wallDimensions.thickness);
+  // const [footingDimensions, setFootingDimensions] = useState({
+  //   projection: "0",
+  //   width: "",
+  //   length: "",
+  //   depth: "",
+  //   followWallDimensions: false,
+  // });
 
-      if (!isNaN(projection) && !isNaN(thickness)) {
-        const widthAndProjection = (projection * 2 + thickness)
-          .toPrecision(3)
-          .toString();
+  // useEffect(() => {
+  //   if (footingDimensions.followWallDimensions) {
+  //     const projection = parseFloat(footingDimensions.projection);
+  //     const thickness = parseFloat(wallDimensions.thickness);
 
-        setFootingDimensions({
-          ...footingDimensions,
-          width: widthAndProjection,
-          length: wallDimensions.length,
-        });
-      } else {
-        console.warn("Invalid projection or thickness:", projection, thickness);
-        setFootingDimensions({
-          ...footingDimensions,
-          width: "",
-          length: "",
-          projection: "0",
-        });
-      }
-    }
+  //     if (!isNaN(projection) && !isNaN(thickness)) {
+  //       const widthAndProjection = (projection * 2 + thickness)
+  //         .toPrecision(3)
+  //         .toString();
 
-    if (!footingDimensions.followWallDimensions) {
-      setFootingDimensions({
-        ...footingDimensions,
-        width: "",
-        length: "",
-      });
-    }
-  }, [
-    wallDimensions,
-    footingDimensions.followWallDimensions,
-    footingDimensions.projection,
-  ]);
+  //       setFootingDimensions({
+  //         ...footingDimensions,
+  //         width: widthAndProjection,
+  //         length: wallDimensions.length,
+  //       });
+  //     } else {
+  //       console.warn("Invalid projection or thickness:", projection, thickness);
+  //       setFootingDimensions({
+  //         ...footingDimensions,
+  //         width: "",
+  //         length: "",
+  //         projection: "0",
+  //       });
+  //     }
+  //   }
+
+  //   if (!footingDimensions.followWallDimensions) {
+  //     setFootingDimensions({
+  //       ...footingDimensions,
+  //       width: "",
+  //       length: "",
+  //     });
+  //   }
+  // }, [
+  //   wallDimensions,
+  //   footingDimensions.followWallDimensions,
+  //   footingDimensions.projection,
+  // ]);
 
   return (
     <div className="flex flex-col items-center justify-center p-8 pb-20 text-sm/6 text-center sm:text-left font-[family-name:var(--font-roboto-mono)]">
