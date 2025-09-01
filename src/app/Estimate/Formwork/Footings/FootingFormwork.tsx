@@ -16,14 +16,14 @@ export default function FootingFormwork(
   const dimLumber = (footingDepth: string) => {
     const inches = parseFloat(footingDepth) / 0.0254;
     switch (true) {
-      case inches < 6:
-        return "2x4x6";
-      case inches < 8:
-        return "2x6x8";
-      case inches < 10:
-        return "2x8x10";
-      case inches < 12:
+      case inches < 5.5:
+        return "2x4x12";
+      case inches < 7.25:
+        return "2x6x12";
+      case inches < 9.25:
         return "2x8x12";
+      case inches < 11.25:
+        return "2x10x12";
       default:
         return "Unknown size possibly need to use plywood";
     }
@@ -55,9 +55,9 @@ export default function FootingFormwork(
         <strong>&#8226; Sidewalk Pins:</strong>
         <span className="text-right">{qtySidewalkPins(footingLength)}</span>
       </div>
-      <div className="grid grid-cols-[4fr_1fr] gap-8 mt-2 text-sm">
+      <div className="grid grid-cols-[4fr_2fr] gap-8 mt-2 text-sm">
         <strong>&#8226; Spreaders (1.22m c/c):</strong>
-        <span className="text-right">{qtySpreaders(footingLength)} @ {footingWidth + 80}m</span>
+        <span className="text-right">{qtySpreaders(footingLength)} @ {((parseFloat(footingWidth) + 0.080) * 1000).toFixed(0)} mm</span>
       </div>
     </div>
   );
