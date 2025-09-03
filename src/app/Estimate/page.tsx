@@ -10,6 +10,7 @@ export type Wall = {
   height: string,
   length: string,
   thickness: string,
+  label: string,
   id: string
 }
 
@@ -34,7 +35,8 @@ export default function EstimatePage(): React.JSX.Element {
     height: "",
     length: "",
     thickness: "",
-    id: "",
+    label: "",
+    id: Date.now().toString(),
   });
 
   const [walls, setWalls] = useState<Wall[]>([wallDimensions]);
@@ -147,6 +149,7 @@ export default function EstimatePage(): React.JSX.Element {
                   height: "",
                   length: "",
                   thickness: "",
+                  label: "",
                   id: Date.now().toString(),
                 };
                 setWalls((prevWalls) => [...prevWalls, newWall]);

@@ -39,7 +39,9 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 Todo:
 1. write schema for persistence layer
 2. provide capability to modify estimate excess (qty buffer)
-3. display takeoffs in separate view with different colors for visual differentiation
-4. provide ability to add multiple wall sections ( label each with a letter, and have corresponding letter assigned to linked footings)
+3. display takeoffs in separate view with different colors for visual differentiation -- this view should be sticky and remain in view (the amount should be a total estimate for all sections)
+4. provide ability to add multiple wall sections ( label each with a letter, and have corresponding letter assigned to linked footings) -- duplicate wall & footing labels should not be allowed
 5. provide footing projection inputs for each side for footing (to accommodate L-shaped footings)
 6. set remote repo in S-zoftLabs - currently remote is ISsait
+7. input validation
+8. error checking and catching

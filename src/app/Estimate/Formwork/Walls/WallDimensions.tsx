@@ -15,7 +15,27 @@ export default function WallDimensions({
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start justify-items-center p-4 sm:p-8 pb-20 text-sm/6 text-center sm:text-left font-[family-name:var(--font-roboto-mono)]">
       <div className="w-full max-w-2xl">
-        <h2 className="text-lg font-semibold mb-4">Wall ID: {wallDimensions.id}</h2>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 mb-4">
+          <label
+            htmlFor="label"
+            className="block text-sm font-medium pt-2"
+          >
+            Wall Label
+          </label>
+          <input
+            type="text"
+            id="label"
+            name="label"
+            className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            placeholder="Enter label"
+            value={wallDimensions.label}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setWallDimensions({ ...wallDimensions, label: e.target.value })
+            }
+          />
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 mb-4">
           <label
             htmlFor="wallHeight"
