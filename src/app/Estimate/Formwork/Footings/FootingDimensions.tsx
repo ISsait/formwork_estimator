@@ -3,28 +3,15 @@
 import React, { useEffect } from "react";
 import FootingConcrete from "../../Concrete/FootingConcrete";
 import FootingFormwork from "./FootingFormwork";
+import type { Footing } from "../../page";
 
 export default function FootingDimensions({
   footingDimensions,
   setFootingDimensions,
 }: {
-  footingDimensions: {
-    projection: string;
-    width: string;
-    length: string;
-    depth: string;
-    followWallDimensions: boolean;
-  };
-  setFootingDimensions: React.Dispatch<
-    React.SetStateAction<{
-      projection: string;
-      width: string;
-      length: string;
-      depth: string;
-      followWallDimensions: boolean;
-    }>
-  >;
-}) {
+  footingDimensions: Footing;
+  setFootingDimensions: (updatedFooting: Footing) => void;
+}) : React.JSX.Element{
   const [isReadOnly, setIsReadOnly] = React.useState(false);
 
   useEffect(() => {
@@ -67,6 +54,30 @@ export default function FootingDimensions({
             />
           </div>
         )}
+
+        <div className="grid grid-cols-1 md:grid-cols-2 mb-4">
+          <label
+            htmlFor="footingLabel"
+            className="block text-sm font-medium pt-2"
+          >
+            Footing Label (m)
+          </label>
+          <input
+            type="text"
+            id="footingLabel"
+            name="footingLabel"
+            className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            placeholder="Enter label"
+            readOnly={isReadOnly}
+            value={footingDimensions.label}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setFootingDimensions({
+                ...footingDimensions,
+                label: e.target.value,
+              })
+            }
+          />
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 mb-4">
           <label

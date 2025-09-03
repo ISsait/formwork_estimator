@@ -5,22 +5,25 @@ import { useState } from "react";
 import Plus from "../Components/Plus";
 import ChevronButton from "@/app/Components/ChevronButton";
 import WallDimensions from "@/app/Estimate/Formwork/Walls/WallDimensions";
+import FootingDimensions from "@/app/Estimate/Formwork/Footings/FootingDimensions";
 
 export type Wall = {
-  height: string,
-  length: string,
-  thickness: string,
-  label: string,
-  id: string
-}
+  height: string;
+  length: string;
+  thickness: string;
+  label: string;
+  id: string;
+};
 
-type Footing = {
-  width: string,
-  length: string,
-  depth: string,
-  followWallDimensions: string | null,
-  id: string
-}
+export type Footing = {
+  projection: string;
+  width: string;
+  length: string;
+  depth: string;
+  label: string;
+  id: string;
+  followWallDimensions?: boolean;
+};
 
 export default function EstimatePage(): React.JSX.Element {
   const [projectName, setProjectName] = useState("");
@@ -31,25 +34,42 @@ export default function EstimatePage(): React.JSX.Element {
     wallFormwork: false,
   });
 
-  const [wallDimensions, setWallDimensions] = useState<Wall>({
+  const [walls, setWalls] = useState<Wall[]>([{
     height: "",
     length: "",
     thickness: "",
     label: "",
     id: Date.now().toString(),
-  });
+  }]);
 
-  const [walls, setWalls] = useState<Wall[]>([wallDimensions]);
+  const [footings, setFootings] = useState<Footing[]>([{
+    projection: "0",
+    width: "",
+    length: "",
+    depth: "",
+    label: "",
+    id: Date.now().toString(),
+    followWallDimensions: false,
+  }]);
 
-  const [footings, setFootings] = useState<Footing[]>([]);
+  const checkSyncFootingWithWall = () => {
+    walls.forEach((wall) => {
+      footings.forEach((footing) => {
+        if (footing.label === wall.label) {
+          setFootings((prevFootings) => {
+            return prevFootings.map((f) => {
+              if (f.id === footing.id) {
+                return { ...f, followWallDimensions: true };
+              }
+              return f;
+            });
+          });
+        }
+      });
+    });
+  };
 
-  // const [footingDimensions, setFootingDimensions] = useState({
-  //   projection: "0",
-  //   width: "",
-  //   length: "",
-  //   depth: "",
-  //   followWallDimensions: false,
-  // });
+
 
   // useEffect(() => {
   //   if (footingDimensions.followWallDimensions) {
@@ -128,37 +148,39 @@ export default function EstimatePage(): React.JSX.Element {
 
           <div className="rounded-xl border border-gray-200 shadow-lg p-4 mb-4">
             <div className="flex flex-col-2 justify-between">
-            <div
-              className="flex items-center cursor-pointer"
-              onClick={() =>
-                setFormworkTypes({
-                  ...formworkTypes,
-                  wallFormwork: !formworkTypes.wallFormwork,
-                })
-              }
-            >
-              <ChevronButton isOpen={formworkTypes.wallFormwork} />
-              <span className="text-base font-semibold text-white dark:text-gray-300">
-                Wall Formwork
-              </span>
-              
+              <div
+                className="flex items-center cursor-pointer"
+                onClick={() =>
+                  setFormworkTypes({
+                    ...formworkTypes,
+                    wallFormwork: !formworkTypes.wallFormwork,
+                  })
+                }
+              >
+                <ChevronButton isOpen={formworkTypes.wallFormwork} />
+                <span className="text-base font-semibold text-white dark:text-gray-300">
+                  Wall Formwork
+                </span>
+              </div>
+              <div
+                className="flex items-center cursor-pointer"
+                onClick={() => {
+                  const newWall: Wall = {
+                    height: "",
+                    length: "",
+                    thickness: "",
+                    label: "",
+                    id: Date.now().toString(),
+                  };
+                  setWalls((prevWalls) => [...prevWalls, newWall]);
+                }}
+              >
+                <Plus />
+                <span className="ml-2 text-sm text-gray-500">
+                  Add Wall Section
+                </span>
+              </div>
             </div>
-            <div className="flex items-center cursor-pointer"
-              onClick={() => {
-                const newWall: Wall = {
-                  height: "",
-                  length: "",
-                  thickness: "",
-                  label: "",
-                  id: Date.now().toString(),
-                };
-                setWalls((prevWalls) => [...prevWalls, newWall]);
-              }}
-            >
-              <Plus />
-              <span className="ml-2 text-sm text-gray-500">Add Wall Section</span>
-            </div>
-          </div>
 
             {/* Content: Conditionally Rendered Formwork Details */}
             {formworkTypes.wallFormwork && (
@@ -169,7 +191,64 @@ export default function EstimatePage(): React.JSX.Element {
                     wallDimensions={wall}
                     setWallDimensions={(updatedWall: Wall) => {
                       setWalls((prevWalls) =>
-                        prevWalls.map((w) => (w.id === updatedWall.id ? updatedWall : w))
+                        prevWalls.map((w) =>
+                          w.id === updatedWall.id ? updatedWall : w
+                        )
+                      );
+                    }}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+          <div className="rounded-xl border border-gray-200 shadow-lg p-4 mb-4">
+            <div className="flex flex-row justify-between">
+              <div
+                className="flex items-center cursor-pointer"
+                onClick={() =>
+                  setFormworkTypes({
+                    ...formworkTypes,
+                    footingFormwork: !formworkTypes.footingFormwork,
+                  })
+                }
+              >
+                <ChevronButton isOpen={formworkTypes.footingFormwork} />
+                <span className="text-base font-semibold text-white dark:text-gray-300">
+                  Footing Formwork
+                </span>
+              </div>
+              <div
+                className="flex items-center cursor-pointer"
+                onClick={() => {
+                  const newFooting: Footing = {
+                    projection: "0",
+                    width: "",
+                    length: "",
+                    depth: "",
+                    label: "",
+                    id: Date.now().toString(),
+                    followWallDimensions: false,
+                  };
+                  setFootings((prevFootings) => [...prevFootings, newFooting]);
+                }}
+              >
+                <Plus />
+                <span className="ml-2 text-sm text-gray-500">
+                  Add Footing Section
+                </span>
+              </div>
+            </div>
+            {formworkTypes.footingFormwork && (
+              <div>
+                {footings.map((footing) => (
+                  <FootingDimensions
+                    key={footing.id}
+                    footingDimensions={footing}
+                    setFootingDimensions={(updatedFooting: Footing) => {                      
+                      setFootings((prevFooting) => 
+                        prevFooting.map((f) =>
+                          f.id === updatedFooting.id ? updatedFooting : f
+                        )
                       );
                     }}
                   />
