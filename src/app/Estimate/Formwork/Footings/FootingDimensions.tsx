@@ -25,6 +25,31 @@ export default function FootingDimensions({
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start justify-items-center p-4 sm:p-8 pb-20 text-sm/6 text-center sm:text-left font-[family-name:var(--font-roboto-mono)]">
       <div className="w-full max-w-2xl">
+
+        <div className="grid grid-cols-1 md:grid-cols-2 mb-4">
+          <label
+            htmlFor="footingLabel"
+            className="block text-sm font-medium pt-2"
+          >
+            Footing Label (m)
+          </label>
+          <input
+            type="text"
+            id="footingLabel"
+            name="footingLabel"
+            className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            placeholder="Enter label"
+            readOnly={isReadOnly}
+            value={footingDimensions.label}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setFootingDimensions({
+                ...footingDimensions,
+                label: e.target.value,
+              })
+            }
+          />
+        </div>
+
         {footingDimensions.followWallDimensions && (
           <div className="grid grid-cols-1 md:grid-cols-2 mb-4">
             <label
@@ -54,30 +79,6 @@ export default function FootingDimensions({
             />
           </div>
         )}
-
-        <div className="grid grid-cols-1 md:grid-cols-2 mb-4">
-          <label
-            htmlFor="footingLabel"
-            className="block text-sm font-medium pt-2"
-          >
-            Footing Label (m)
-          </label>
-          <input
-            type="text"
-            id="footingLabel"
-            name="footingLabel"
-            className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            placeholder="Enter label"
-            readOnly={isReadOnly}
-            value={footingDimensions.label}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setFootingDimensions({
-                ...footingDimensions,
-                label: e.target.value,
-              })
-            }
-          />
-        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 mb-4">
           <label

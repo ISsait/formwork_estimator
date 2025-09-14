@@ -45,3 +45,4 @@ Todo:
 6. set remote repo in S-zoftLabs - currently remote is ISsait
 7. input validation
 8. error checking and catching
+9. sync wall and footing is not complete yet

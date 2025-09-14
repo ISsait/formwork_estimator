@@ -22,7 +22,7 @@ export type Footing = {
   depth: string;
   label: string;
   id: string;
-  followWallDimensions?: boolean;
+  followWallDimensions: boolean;
 };
 
 export default function EstimatePage(): React.JSX.Element {
@@ -34,45 +34,56 @@ export default function EstimatePage(): React.JSX.Element {
     wallFormwork: false,
   });
 
-  const [walls, setWalls] = useState<Wall[]>([{
-    height: "",
-    length: "",
-    thickness: "",
-    label: "",
-    id: Date.now().toString(),
-  }]);
+  const [walls, setWalls] = useState<Wall[]>([
+    {
+      height: "",
+      length: "",
+      thickness: "",
+      label: "",
+      id: Date.now().toString(),
+    },
+  ]);
 
-  const [footings, setFootings] = useState<Footing[]>([{
-    projection: "0",
-    width: "",
-    length: "",
-    depth: "",
-    label: "",
-    id: Date.now().toString(),
-    followWallDimensions: false,
-  }]);
+  const [footings, setFootings] = useState<Footing[]>([
+    {
+      projection: "0",
+      width: "",
+      length: "",
+      depth: "",
+      label: "",
+      id: Date.now().toString(),
+      followWallDimensions: false,
+    },
+  ]);
 
   const checkSyncFootingWithWall = () => {
     walls.forEach((wall) => {
       footings.forEach((footing) => {
-        if (footing.label === wall.label) {
-          setFootings((prevFootings) => {
+        if (footing.label === wall.label && footing.label !== "" && wall.label !== "") {
+          const newFootings = (prevFootings: Footing[]) => {
             return prevFootings.map((f) => {
               if (f.id === footing.id) {
-                return { ...f, followWallDimensions: true };
+                f.followWallDimensions = true;
+                f.length = wall.length;
+                const projection = parseFloat(f.projection);
+                const thickness = parseFloat(wall.thickness);
+                const widthAndProjection = (projection * 2 + thickness)
+                  .toPrecision(3)
+                  .toString();
+                f.width = widthAndProjection;
               }
               return f;
             });
-          });
+          };
+          setFootings(newFootings);
         }
       });
     });
+    console.log(footings);
   };
 
-
-
   // useEffect(() => {
-  //   if (footingDimensions.followWallDimensions) {
+  //   if (FootingDimensions.followWallDimensions) {
   //     const projection = parseFloat(footingDimensions.projection);
   //     const thickness = parseFloat(wallDimensions.thickness);
 
@@ -190,6 +201,7 @@ export default function EstimatePage(): React.JSX.Element {
                     key={wall.id}
                     wallDimensions={wall}
                     setWallDimensions={(updatedWall: Wall) => {
+                      checkSyncFootingWithWall();
                       setWalls((prevWalls) =>
                         prevWalls.map((w) =>
                           w.id === updatedWall.id ? updatedWall : w
@@ -244,8 +256,9 @@ export default function EstimatePage(): React.JSX.Element {
                   <FootingDimensions
                     key={footing.id}
                     footingDimensions={footing}
-                    setFootingDimensions={(updatedFooting: Footing) => {                      
-                      setFootings((prevFooting) => 
+                    setFootingDimensions={(updatedFooting: Footing) => {
+                      checkSyncFootingWithWall();
+                      setFootings((prevFooting) =>
                         prevFooting.map((f) =>
                           f.id === updatedFooting.id ? updatedFooting : f
                         )
