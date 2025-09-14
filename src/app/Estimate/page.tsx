@@ -6,6 +6,7 @@ import Plus from "../Components/Plus";
 import ChevronButton from "@/app/Components/ChevronButton";
 import WallDimensions from "@/app/Estimate/Formwork/Walls/WallDimensions";
 import FootingDimensions from "@/app/Estimate/Formwork/Footings/FootingDimensions";
+import { useEffect } from "react";
 
 export type Wall = {
   height: string;
@@ -56,70 +57,34 @@ export default function EstimatePage(): React.JSX.Element {
     },
   ]);
 
-  const checkSyncFootingWithWall = () => {
+  useEffect(() => {
     walls.forEach((wall) => {
       footings.forEach((footing) => {
-        if (footing.label === wall.label && footing.label !== "" && wall.label !== "") {
-          const newFootings = (prevFootings: Footing[]) => {
-            return prevFootings.map((f) => {
-              if (f.id === footing.id) {
-                f.followWallDimensions = true;
-                f.length = wall.length;
-                const projection = parseFloat(f.projection);
-                const thickness = parseFloat(wall.thickness);
-                const widthAndProjection = (projection * 2 + thickness)
-                  .toPrecision(3)
-                  .toString();
-                f.width = widthAndProjection;
-              }
-              return f;
-            });
+        if (
+          footing.label === wall.label &&
+          footing.label !== "" &&
+          wall.label !== ""
+        ) {
+          const newFooting = {
+            ...footing,
+            followWallDimensions: true,
+            length: wall.length,
+            width: (
+              parseFloat(footing.projection) * 2 +
+              parseFloat(wall.thickness)
+            )
+              .toFixed(3)
+              .toString(),
           };
-          setFootings(newFootings);
+          if (footing.length !== newFooting.length || footing.width !== newFooting.width) {
+            setFootings((prevFootings) =>
+              prevFootings.map((f) => (f.id === footing.id ? newFooting : f))
+            );
+          }
         }
       });
     });
-    console.log(footings);
-  };
-
-  // useEffect(() => {
-  //   if (FootingDimensions.followWallDimensions) {
-  //     const projection = parseFloat(footingDimensions.projection);
-  //     const thickness = parseFloat(wallDimensions.thickness);
-
-  //     if (!isNaN(projection) && !isNaN(thickness)) {
-  //       const widthAndProjection = (projection * 2 + thickness)
-  //         .toPrecision(3)
-  //         .toString();
-
-  //       setFootingDimensions({
-  //         ...footingDimensions,
-  //         width: widthAndProjection,
-  //         length: wallDimensions.length,
-  //       });
-  //     } else {
-  //       console.warn("Invalid projection or thickness:", projection, thickness);
-  //       setFootingDimensions({
-  //         ...footingDimensions,
-  //         width: "",
-  //         length: "",
-  //         projection: "0",
-  //       });
-  //     }
-  //   }
-
-  //   if (!footingDimensions.followWallDimensions) {
-  //     setFootingDimensions({
-  //       ...footingDimensions,
-  //       width: "",
-  //       length: "",
-  //     });
-  //   }
-  // }, [
-  //   wallDimensions,
-  //   footingDimensions.followWallDimensions,
-  //   footingDimensions.projection,
-  // ]);
+  }, [walls, footings]);
 
   return (
     <div className="flex flex-col items-center justify-center p-8 pb-20 text-sm/6 text-center sm:text-left font-[family-name:var(--font-roboto-mono)]">
@@ -201,7 +166,6 @@ export default function EstimatePage(): React.JSX.Element {
                     key={wall.id}
                     wallDimensions={wall}
                     setWallDimensions={(updatedWall: Wall) => {
-                      checkSyncFootingWithWall();
                       setWalls((prevWalls) =>
                         prevWalls.map((w) =>
                           w.id === updatedWall.id ? updatedWall : w
@@ -257,7 +221,6 @@ export default function EstimatePage(): React.JSX.Element {
                     key={footing.id}
                     footingDimensions={footing}
                     setFootingDimensions={(updatedFooting: Footing) => {
-                      checkSyncFootingWithWall();
                       setFootings((prevFooting) =>
                         prevFooting.map((f) =>
                           f.id === updatedFooting.id ? updatedFooting : f

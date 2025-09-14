@@ -39,7 +39,6 @@ export default function FootingDimensions({
             name="footingLabel"
             className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             placeholder="Enter label"
-            readOnly={isReadOnly}
             value={footingDimensions.label}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               setFootingDimensions({
@@ -118,6 +117,7 @@ export default function FootingDimensions({
             className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             placeholder="Enter length"
             value={footingDimensions.length}
+            readOnly={isReadOnly}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               setFootingDimensions({
                 ...footingDimensions,
